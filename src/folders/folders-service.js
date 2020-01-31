@@ -2,7 +2,7 @@ const FoldersService = {
     getAllFolders(knex) {
         return knex.select('*').from('noteful_folders')
     },
-    insertFolders(knex, newFolder) {
+    insertFolder(knex, newFolder) {
         return knex
             .insert(newFolder)
             .into('noteful_folders')
