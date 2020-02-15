@@ -25,7 +25,7 @@ notesRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { title, content, folder  } = req.body
+        const { title, content, folder } = req.body
         const newNote = { title, content, folder }
         const knexInstance = req.app.get('db')
 
@@ -37,7 +37,7 @@ notesRouter
             }
         }
 
-        newNote.folder = folder
+        newNote.folder_id = folder_id
 
         NotesService.insertNote(knexInstance, newNote)
             .then(note=> {
@@ -60,7 +60,7 @@ notesRouter
                         error: { message: `Note doesn't exist`}
                     })
                 }
-                res.article = article
+                res.note = note
                 next()
             })
             .catch(next)
@@ -89,7 +89,7 @@ notesRouter
     })
     .patch(jsonParser,(req, res, next) => {
         const { title, content, folder } = req.body
-        const noteToUpdate = { title, content, folder }
+        const noteToUpdate = { title, content, folder}
         const knexInstance = req.app.get('db')
 
         const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length

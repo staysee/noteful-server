@@ -276,7 +276,7 @@ describe(`Folder Endpoints`, function() {
                 it(`responds with 204 and updates the note`, () => {
                     const idToUpdate = 2
                     const updateNote = {
-                        title: 'updated note title',
+                        title: 'updated note name',
                         content: 'updating content',
                         folder: 3
                     }

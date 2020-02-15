@@ -7,3 +7,5 @@ CREATE TABLE noteful_notes (
     folder INTEGER REFERENCES noteful_folders(id) ON DELETE CASCADE NOT NULL,
     modified_date TIMESTAMP DEFAULT now() NOT NULL
 );
+
+-- name, content, folder id, modified
