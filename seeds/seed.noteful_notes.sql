@@ -3,7 +3,7 @@ TRUNCATE noteful_notes RESTART IDENTITY CASCADE;
 
 -- insert some notes
 INSERT INTO noteful_notes 
-    (title, content, folder)
+    (name, content, folderId)
     VALUES
         ('Apple', 'apple content', 1),
         ('Banana', 'banana content', 2),

@@ -8,10 +8,10 @@ const jsonParser = express.json()
 
 const serializeNote = note => ({
     id: note.id,
-    title: xss(note.title),
+    name: xss(note.name),
     content: xss(note.content),
-    modified_date: note.modified_date,
-    folder: note.folder
+    modified: note.modified,
+    folderId: note.folderId
 })
 
 notesRouter
@@ -25,8 +25,8 @@ notesRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { title, content, folder } = req.body
-        const newNote = { title, content, folder }
+        const { name, content, folderId } = req.body
+        const newNote = { name, content, folderId }
         const knexInstance = req.app.get('db')
 
         for (const [key, value] of Object.entries(newNote)) {
@@ -37,7 +37,9 @@ notesRouter
             }
         }
 
-        newNote.folder_id = folder_id
+        newNote.name = name
+        newNote.content = content
+        newNote.folderId = folderId
 
         NotesService.insertNote(knexInstance, newNote)
             .then(note=> {
@@ -67,17 +69,16 @@ notesRouter
     })
     .get((req, res, next) => {
         res.json(serializeNote(res.note))
-        // const knexInstance = req.app.get('db')
-        // NotesService.getById(knexInstance, req.params.note_id)
-        //     .then(note => {
-        //         if (!note) {
-        //             return res.status(404).json({
-        //                 error: { message: `Note doesn't exist` }
-        //             })
-        //         }
-        //         res.json(serializeNote(res.note))
-        //     })
-        
+        const knexInstance = req.app.get('db')
+        NotesService.getById(knexInstance, req.params.note_id)
+            .then(note => {
+                if (!note) {
+                    return res.status(404).json({
+                        error: { message: `Note doesn't exist` }
+                    })
+                }
+                res.json(serializeNote(res.note))
+            })
     })
     .delete((req, res, next) => {
         const knexInstance = req.app.get('db')
@@ -88,14 +89,14 @@ notesRouter
             .catch()
     })
     .patch(jsonParser,(req, res, next) => {
-        const { title, content, folder } = req.body
-        const noteToUpdate = { title, content, folder}
+        const { name, content, folderId } = req.body
+        const noteToUpdate = { name, content, folderId}
         const knexInstance = req.app.get('db')
 
-        const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length
+        const numberOfValues = Object.values(noteToUpdate).filter(Boolean).length
         if (numberOfValues === 0) {
             return res.status(400).json({
-                error: { message: `Request body must contain 'title'`}
+                error: { message: `Request body must contain either 'name', 'content', 'folderId'.`}
             })
         }
         
