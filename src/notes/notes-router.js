@@ -11,7 +11,7 @@ const serializeNote = note => ({
     name: xss(note.name),
     content: xss(note.content),
     modified: note.modified,
-    folderId: note.folderId
+    folderId: note.folder_id
 })
 
 notesRouter
@@ -25,8 +25,8 @@ notesRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { name, content, folderId } = req.body
-        const newNote = { name, content, folderId }
+        const { name, content, folder_id } = req.body
+        const newNote = { name, content, folder_id }
         const knexInstance = req.app.get('db')
 
         for (const [key, value] of Object.entries(newNote)) {
@@ -39,7 +39,7 @@ notesRouter
 
         newNote.name = name
         newNote.content = content
-        newNote.folderId = folderId
+        newNote.folder_id = folder_id
 
         NotesService.insertNote(knexInstance, newNote)
             .then(note=> {
@@ -89,14 +89,14 @@ notesRouter
             .catch()
     })
     .patch(jsonParser,(req, res, next) => {
-        const { name, content, folderId } = req.body
-        const noteToUpdate = { name, content, folderId}
+        const { name, content, folder_id } = req.body
+        const noteToUpdate = { name, content, folder_id }
         const knexInstance = req.app.get('db')
 
         const numberOfValues = Object.values(noteToUpdate).filter(Boolean).length
         if (numberOfValues === 0) {
             return res.status(400).json({
-                error: { message: `Request body must contain either 'name', 'content', 'folderId'.`}
+                error: { message: `Request body must contain either 'name', 'content', 'folder_id'.`}
             })
         }
         

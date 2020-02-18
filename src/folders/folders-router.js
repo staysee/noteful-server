@@ -47,10 +47,10 @@ foldersRouter
     })
 
 foldersRouter
-    .route('/:folder_id')
+    .route('/:folder')
     .all((req, res, next) => {
         const knexInstance = req.app.get('db')
-        FoldersService.getById(knexInstance, req.params.folder_id)
+        FoldersService.getById(knexInstance, req.params.folder)
             .then(folder => {
                 if (!folder) {
                     return res.status(404).json({
@@ -68,7 +68,7 @@ foldersRouter
     })
     .delete((req, res, next) => {
         const knexInstance = req.app.get('db')
-        FoldersService.deleteFolder(knexInstance, req.params.folder_id)
+        FoldersService.deleteFolder(knexInstance, req.params.folder)
             .then(numRowsAffected => {
                 res.status(204).end()
             })
@@ -86,7 +86,7 @@ foldersRouter
             })
         }
         
-        FoldersService.updateFolder(knexInstance, req.params.folder_id, folderToUpdate)
+        FoldersService.updateFolder(knexInstance, req.params.folder, folderToUpdate)
             .then(numRowsAffected => {
                 res.status(204).end()
             })

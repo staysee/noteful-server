@@ -154,7 +154,7 @@ describe(`Notes Endpoints`, function() {
             const newNote = {
                 title: 'Test new note',
                 content: 'test content',
-                folder: 1
+                folder_id: 1
             }
             return supertest(app)
                 .post('/api/notes')
@@ -163,7 +163,7 @@ describe(`Notes Endpoints`, function() {
                 .expect(res => {
                     expect(res.body.title).to.eql(newNote.title)
                     expect(res.body.content).to.eql(newNote.content)
-                    expect(res.body.folder).to.eql(newNote.folder)
+                    expect(res.body.folder_id).to.eql(newNote.folder_id)
                     expect(res.body).to.have.property('id')
                     expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`)
                     const expected = new Date().toLocaleString()
@@ -176,13 +176,13 @@ describe(`Notes Endpoints`, function() {
                         .expect(postRes.body)
                 )
 
-                const requiredFields = ['title', 'folder']
+                const requiredFields = ['title', 'folder_id']
 
                 requiredFields.forEach(field => {
                     const newNote = {
                         title: 'Test new note', 
                         content: 'some content',
-                        folder: 2
+                        folder_id: 2
                     }
 
                     it(`responds with 400 and an error message when the '${field}' is missing`, () => {
@@ -281,7 +281,7 @@ describe(`Notes Endpoints`, function() {
                 const updateNote = {
                     name: 'updated note name',
                     content: 'updating content',
-                    folderId: 3
+                    folder_id: 3
                 }
                 const expectedNote = {
                     ...testNotes[idToUpdate-1],
@@ -305,7 +305,7 @@ describe(`Notes Endpoints`, function() {
                     .send({ irrelevantFields: 'foo' })
                     .expect(400, {
                         error: {
-                            message: `Request body must contain either 'name', 'content', 'folderId'.`
+                            message: `Request body must contain either 'name', 'content', 'Id'.`
                         }
                     })
             })
