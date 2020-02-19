@@ -5,28 +5,28 @@ function makeNotesArray(){
             name: 'First test note!',
             content: 'Lorem ipsum dolor sit amet.',
             modified: '2029-01-22T16:28:32.615Z',
-            folderId: 1
+            folder_id: 1
         },
         {
             id: 2,
             name: 'Second test post!',
             content: 'Lorem ipsum dolor sit amet.',
             modified: '2100-05-22T16:28:32.615Z',
-            folderId: 1
+            folder_id: 1
         },
         {
             id: 3,
             name: 'Third test post!',
             content: 'Lorem ipsum dolor sit amet.',
             modified: '1919-12-22T16:28:32.615Z',
-            folderId: 2
+            folder_id: 2
         },
         {
             id: 4,
             name: 'Fourth test post!',
             content: 'Lorem ipsum dolor sit amet.',
             modified: '1919-12-22T16:28:32.615Z',
-            folderId: 3
+            folder_id: 3
         }
     ]
 }
