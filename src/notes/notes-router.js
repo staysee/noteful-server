@@ -11,7 +11,7 @@ const serializeNote = note => ({
     name: xss(note.name),
     content: xss(note.content),
     modified: note.modified,
-    folderId: note.folder_id
+    folder_id: note.folder_id
 })
 
 notesRouter
@@ -69,16 +69,6 @@ notesRouter
     })
     .get((req, res, next) => {
         res.json(serializeNote(res.note))
-        const knexInstance = req.app.get('db')
-        NotesService.getById(knexInstance, req.params.note_id)
-            .then(note => {
-                if (!note) {
-                    return res.status(404).json({
-                        error: { message: `Note doesn't exist` }
-                    })
-                }
-                res.json(serializeNote(res.note))
-            })
     })
     .delete((req, res, next) => {
         const knexInstance = req.app.get('db')
